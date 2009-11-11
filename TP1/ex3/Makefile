@@ -23,8 +23,9 @@ LEXER = lexer
 # Nom du programme
 EXEC = $(LEXER).exe
 
-# Nom du fichier de test
-TEST_FILE = tri.pas
+# Nom des fichiers de test
+TEST_FILE1 = tri.pas
+TEST_FILE2 = test.c
 
 all: $(BIN)/$(EXEC)
 
@@ -43,7 +44,10 @@ $(SRC)/%.c: $(SRC)/%.l
 	$(LEX) -o $@ $<
 
 exec: $(BIN)/$(EXEC)
-	$(BIN)/$(EXEC) $(RES)/$(TEST_FILE)
+	@echo Test imbrication correcte
+	$(BIN)/$(EXEC) $(RES)/$(TEST_FILE1)
+	@echo Test imbrication incorrecte
+	$(BIN)/$(EXEC) $(RES)/$(TEST_FILE2)
 	
 clean:
 	rm -rf $(OBJ) $(SRC)/*.c
