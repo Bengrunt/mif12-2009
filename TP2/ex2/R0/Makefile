@@ -61,7 +61,7 @@ $(DEP)/$(LEXER).cpp: $(SRC)/$(LEXER).l
 #	$(YACC) $(YFLAGS) -o $@ $<
 #	mv $(SRC)/$(PARSER).h $(DEP)/$(PARSER).h
 
-.PHONY: exec clean distclean
+.PHONY: exec clean distclean tmpclean
 
 exec: $(BIN)/$(EXEC)
 	@echo Test du programme :
@@ -72,3 +72,6 @@ clean:
 
 distclean: clean
 	rm -rf $(BIN)
+
+tmpclean:
+	rm -rf $(SRC)/*~ $(INC)/*~ ./*~

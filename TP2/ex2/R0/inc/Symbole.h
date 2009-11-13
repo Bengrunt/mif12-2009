@@ -1,22 +1,21 @@
 #ifndef TYPE_DEF
 #define TYPE_DEF
 /**
- * Classe de gestion d'un type du langage Pascal.
+ * Classe de gestion d'un symbole d'un programme en Pascal.
  */
-class Type {
+class Symbole {
 	private:
-		/** Constante correspondant au type courant. */
-		TypeId _id;
-		/** Chaîne correspondante au nom du type dans le langage. */
+		/** Constante correspondant au type de symbole courant. */
+		SymboleTypeId _id;
+		/** Chaîne correspondante au nom du type de symbole dans le langage. */
 		char* _name;
 	public:
-		/** Enumération des types connus. */
-		enum TypeId {
-			BOOLEAN,	/**< Type booléen. */
-			CHAR,		/**< Type caractère. */
-			INTEGER,	/**< Type entier. */
-			REAL,		/**< Type réel. */
-			STRING		/**< Type chaîne de caractères. */
+		/** Enumération des types de symboles connus. */
+		enum SymboleTypeId {
+			PROGRAM,	/**< Programme. */
+			PROCEDURE,	/**< Procédure. */
+			FUNCTION,	/**< Fonction. */
+			VAR			/**< Variable. */
 		};
 		
 		/**
