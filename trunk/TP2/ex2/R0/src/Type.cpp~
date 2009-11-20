@@ -8,8 +8,8 @@ const char* Type::names[] = {
 };
 
 /* Constructeur */
-Type::Type(const char* name) throw() :
-	_name(NULL) {
+Type::Type(const char* name) throw() {
+	_name = NULL;
 	setName(name);
 }
 

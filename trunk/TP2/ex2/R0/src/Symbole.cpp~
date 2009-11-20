@@ -15,7 +15,7 @@ Type Symbole::getType() const {
 }
 
 char* Symbole::getTypeName() const {
-	return _type.getName();
+	return _type;
 }
 
 /* Modificateurs. */
