@@ -1,60 +1,59 @@
-#ifndef TYPE_DEF
-#define TYPE_DEF
+#ifndef SYMBOLE_DEF
+#define SYMBOLE_DEF
+
+#include "Type.h"
 /**
  * Classe de gestion d'un symbole d'un programme en Pascal.
  */
 class Symbole {
 	private:
-		/** Constante correspondant au type de symbole courant. */
-		SymboleTypeId _id;
-		/** Chaîne correspondante au nom du type de symbole dans le langage. */
-		char* _name;
+		/** Id du symbole. */
+		unsigned int _id;
+		/** Type du symbole. */
+		Type _type;
 	public:
-		/** Enumération des types de symboles connus. */
-		enum SymboleTypeId {
-			PROGRAM,	/**< Programme. */
-			PROCEDURE,	/**< Procédure. */
-			FUNCTION,	/**< Fonction. */
-			VAR			/**< Variable. */
-		};
-		
 		/**
 		 * Constructeur.
 		 *
-		 * @param[in] id Id de type possible.
+		 * @param[in] id Id du symbole.
+		 * @param[in] type Type du symbole.
 		 */
-		Type(const TypeId id);
+		Symbole(const unsigned int, const Type& type) throw();
 		
 		/** 
-		 * Obtenir nom du type courant.
+		 * Obtenir id du symbole courant.
 		 * 
-		 * @return Name du type courant.
+		 * @return Id du symbole courant.
 		 */
-		char* getName() const;
-
-		/** 
-		 * Obtenir du du type courant.
-		 * 
-		 * @return Id du type courant.
-		 */
-		TypeId getId() const;
+		unsigned int getId() const;
 
 		/**
-		 * Changer type courant.
+		 * Changer symbole courant.
 		 *
-		 * @param[in] id Id de type possible.
+		 * @param[in] name Nom du symbole.
 		 */
-		void setId(const TypeId id);
-};
-/**
- * Classe d'Exception d'un type inconnu.
- */
-class UnknownTypeException: public std::exception {
-	public:
-		/** Message d'erreur à retourner. */
-		const char* what() const throw() {
-			return "Probleme : Type inconnu !";
-		}
+		void setId(const unsigned int);
+		
+		/** 
+		 * Obtenir type du symbole courant.
+		 * 
+		 * @return Type du symbole courant.
+		 */
+		Type getType() const;
+
+		/** 
+		 * Obtenir nom du type du symbole courant.
+		 * 
+		 * @return Nom du type du symbole courant.
+		 */
+		char* getTypeName() const;
+
+		/**
+		 * Changer symbole courant.
+		 *
+		 * @param[in] type Type du symbole.
+		 */
+		void setType(const Type& type) throw();
 };
 
 #endif

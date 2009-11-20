@@ -4,6 +4,7 @@
 /* Inclusion des librairies C standard */
 #include <cstdlib>
 #include <cstring>
+#include "exceptions.h"
 
 /* Inclusion des librairies C++ standard */
 #include <iostream>
@@ -29,13 +30,6 @@ class TableDesIdentificateurs {
 		 * @param str Nom identificateur.
 		 */
 		void add(const char* str);
-};
-
-class AllocationException: public std::exception {
-	public:
-		const char* what() const throw() {
-			return "Probleme rencontre lors de l'allocation !";
-		}
 };
 
 #endif
