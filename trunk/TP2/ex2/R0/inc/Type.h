@@ -4,36 +4,24 @@
 #include <cstring>
 #include "exceptions.h"
 /**
- * Classe de gestion d'un type du langage Pascal.
+ * Classe abstraite de gestion d'un type du langage Pascal.
  */
 class Type {
-	private:
-		/** Liste des types de base du Pascal. */
-		static const char* names[];
-
+	protected:
 		/** Chaîne correspondante au nom du type dans le langage. */
 		char* _name;
 	public:
 		/**
-		 * Constructeur.
-		 *
-		 * @param[in] name Nom du type.
+		 * Destructeur (à définir dans les enfants).
 		 */
-		Type(const char* name) throw();
-		
+		virtual ~Type() = 0;
+
 		/** 
 		 * Obtenir nom du type courant.
 		 * 
 		 * @return Name du type courant.
 		 */
 		char* getName() const;
-
-		/**
-		 * Changer type courant.
-		 *
-		 * @param[in] name Nom du type.
-		 */
-		void setName(const char* name) throw();
 };
 
 #endif

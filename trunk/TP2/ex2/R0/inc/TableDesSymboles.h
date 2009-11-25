@@ -12,7 +12,7 @@
 class TableDesSymboles {
 	private:
 		/** Conteneur des symboles. */
-		std::deque<Symbole> _symboles;
+		std::deque<Symbole*> _symboles;
 
 	public:
 		/** Constructeur. */
@@ -26,7 +26,7 @@ class TableDesSymboles {
 		 * 
 		 * @param symbole Nouveau symbole.
 		 */
-		void add(const Symbole symbole);
+		void add(Symbole* symbole);
 };
 
 #endif
