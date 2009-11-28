@@ -2,7 +2,7 @@
 #define TYPE_DEF
 
 #include <cstring>
-#include "exceptions.h"
+#include "exceptions.hpp"
 /**
  * Classe abstraite de gestion d'un type du langage Pascal.
  */

@@ -1,0 +1,140 @@
+%{
+#include <iostream>
+#include "TableDesIdentificateurs.hpp"
+#include "TableDesSymboles.hpp"
+#include "Variable.hpp"
+#include "TypeBoolean.hpp"
+#include "TypeChar.hpp"
+#include "TypeInteger.hpp"
+#include "TypeReal.hpp"
+#include "TypeString.hpp"
+
+/* Ressources définies dans le lexer.cpp. */
+extern int yyerror(char* m);
+extern int yylex();
+extern FILE* yyin;
+extern char* yytext;
+
+TableDesIdentificateurs ti; /**< Table des indentificateurs. */
+TableDesSymboles ts; /**< Table des symboles. */
+%}
+/* Mots clefs du langage */
+%token KW_PROGRAM
+%token KW_VAR
+%token KW_BEGIN
+%token KW_END
+%token KW_INTEGER
+%token KW_REAL
+%token KW_BOOLEAN
+%token KW_CHAR
+%token KW_STRING
+
+/* Séparateurs du langage */
+%token SEP_SCOL
+%token SEP_DOT
+%token SEP_COL
+%token SEP_COMMA
+
+/* Identificateur */
+%token TOK_IDENT
+
+/* Point de départ */
+%start Program
+
+%%
+/* Programme */
+Program			:	ProgramHeader SEP_SCOL Block SEP_DOT
+				;
+
+/* En-tête du programme */
+ProgramHeader	:	KW_PROGRAM TOK_IDENT {
+						try{ti.add(yytext);}
+						catch(AllocationException e) {
+							std::cerr << e.what() << std::endl;
+							exit(EXIT_FAILURE);
+						}
+					}
+				;
+
+/* Bloc de programme, procédure ou fonction */
+Block			:	BlockDeclVar BlockCode
+				;
+
+/* Bloc de déclaration de variables */
+BlockDeclVar 	:	KW_VAR ListDeclVar
+				|
+				;
+
+/* Liste de déclaration de variables */		
+ListDeclVar		:	ListDeclVar DeclVar
+				|	DeclVar
+				;
+
+/* Déclaration de variables */
+DeclVar			:	ListIdent SEP_COL Type SEP_SCOL
+				;
+
+/* Liste d'identificateurs */
+ListIdent		:	ListIdent SEP_COMMA TOK_IDENT {
+						try{ti.add(yytext);}
+						catch(AllocationException e) {
+							std::cerr << e.what() << std::endl;
+							exit(EXIT_FAILURE);
+						}
+					}
+				|	TOK_IDENT {
+						try{ti.add(yytext);}
+						catch(AllocationException e) {
+							std::cerr << e.what() << std::endl;
+							exit(EXIT_FAILURE);
+						}
+					}
+				;
+
+/* Type de base */
+Type			:	KW_INTEGER {
+						ts.add(new Variable(new TypeInteger()));
+					}
+                |	KW_REAL {
+						ts.add(new Variable(new TypeReal()));
+					}
+                |	KW_BOOLEAN {
+						ts.add(new Variable(new TypeBoolean()));
+					}
+                |	KW_CHAR {
+						ts.add(new Variable(new TypeChar()));
+					}
+                |	KW_STRING {
+						ts.add(new Variable(new TypeString()));
+					}
+                ;
+
+/* Bloc de code */
+BlockCode		:	KW_BEGIN KW_END
+                ;
+
+%%
+
+int main ( int argc, char** argv ) {
+	/* Vérification arguments. */
+	if(argc != 2) {
+		std::cerr << "Erreur : Vous devez passer une source Pascal en argument." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	yyin = fopen(argv[1], "r");
+	if(yyin == NULL) {
+		return EXIT_FAILURE;
+	}
+	
+    yyparse();
+	
+	std::cout << "Table des identificateurs : ----------------------------------------------------" << std::flush;
+	ti.print();
+	std::cout << "Table des symboles : -----------------------------------------------------------" << std::flush;
+	ts.print();
+	
+    fclose(yyin);
+	
+	return EXIT_SUCCESS;
+}

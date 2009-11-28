@@ -2,7 +2,7 @@
 #define TYPE_CHAR_DEF
 
 #include <cstring>
-#include "Type.h"
+#include "Type.hpp"
 /**
  * Classe de gestion d'un type caractère du langage Pascal.
  */

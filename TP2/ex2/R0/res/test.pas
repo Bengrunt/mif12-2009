@@ -1,0 +1,6 @@
+program test;
+var v0, v1 : integer;
+    vreal  : real;
+    temp   : string;
+begin
+end.

@@ -1,4 +1,4 @@
-#include "TypeChar.h"
+#include "TypeChar.hpp"
 
 /**
  * Constructeur.

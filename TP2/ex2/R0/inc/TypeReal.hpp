@@ -2,7 +2,7 @@
 #define TYPE_REAL_DEF
 
 #include <cstring>
-#include "Type.h"
+#include "Type.hpp"
 /**
  * Classe de gestion d'un type réel du langage Pascal.
  */

@@ -1,4 +1,4 @@
-#include "Variable.h"
+#include "Variable.hpp"
 
 /* Constructeur. */
 Variable::Variable(Type* type) :

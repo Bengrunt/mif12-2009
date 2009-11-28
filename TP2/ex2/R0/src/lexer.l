@@ -1,14 +1,9 @@
 %{
-#include "lexer.h"
-
-TableDesIdentificateurs table; /**< Table des indentificateurs. */
-bool inBlock; /**< Booléen informant sur la présence dans une bloc de code. */
-bool inCommentBlock; /**< Booléen informant sur la présence dans une bloc de 
-                          ccommentaires. */
+#include "lexer.hpp"
 %}
-KW_TYPE				"type"
-KW_FUNCTION			"function"
-KW_PROCEDURE		"procedure"
+/*KW_TYPE				"type"*/
+/*KW_FUNCTION			"function"*/
+/*KW_PROCEDURE		"procedure"*/
 KW_PROGRAM			"program" 
 KW_VAR				"var"
 KW_BEGIN			"begin"
@@ -24,44 +19,33 @@ SEP_COL				":"
 SEP_SCOL			";"
 SEP_COMMA			","
 
-BASIC_TYPE			KW_INTEGER | KW_REAL | KW_BOOLEAN | KW_CHAR | KW_STRING
-TYPE_DCL			{SEP_COL}.*{SEP_SCOL}
+/*COMMENT_BEGIN 		\(\**/
+/*COMMENT_END 		\*\)*/
 
-COMMENT_BEGIN 		\(\*
-COMMENT_END 		\*\)
+TOK_IDENT 			[a-zA-Z][a-zA-Z0-9]*
 
-
-IDENT 				[a-zA-Z][a-zA-Z0-9]*
 %%
-{KW_BEGIN}			inBlock = true;
-{KW_END}			inBlock = false;
-{COMMENT_BEGIN}		inCommentBlock = true;
-{COMMENT_END}		inCommentBlock = false;
+{KW_PROGRAM}		return KW_PROGRAM;
+{KW_VAR}			return KW_VAR;
+{KW_BEGIN}			return KW_BEGIN;
+{KW_END}			return KW_END;
+{KW_INTEGER}		return KW_INTEGER;
+{KW_REAL}			return KW_REAL;
+{KW_BOOLEAN}		return KW_BOOLEAN;
+{KW_CHAR}			return KW_CHAR;
+{KW_STRING}			return KW_STRING;
 
-{TYPE_DCL}			;
-{KW_PROGRAM}		;
-{KW_PROCEDURE}		;
-{KW_FUNCTION}		;
-{KW_TYPE}			;
-{KW_VAR}			;
+{SEP_DOT}			return SEP_DOT;
+{SEP_COL}			return SEP_COL;
+{SEP_SCOL}			return SEP_SCOL;
+{SEP_COMMA}			return SEP_COMMA;
 
-{IDENT}				if(!inBlock && !inCommentBlock) {
-						try{table.add(yytext);}
-						catch(AllocationException e) {
-							std::cerr << e.what() << std::endl;
-							exit(EXIT_FAILURE);
-						}
-					}
+{TOK_IDENT}			return TOK_IDENT;
 .					;
 \n              ;
-%%
 
-int main (int argc, char* argv[]) {   
-	inBlock = false;
-	inCommentBlock = false;
-	yyin = fopen(argv[1], "r");
-	//printf("%d\n", Type::INTEGER);
-	yylex ();
-	table.print();
-	fclose (yyin);
+%%
+int yyerror(char* m) {
+	printf("%s [%s]", m, yytext);
+	return 0;
 }
