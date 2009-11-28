@@ -1,13 +1,14 @@
 # Compilateur et linker
 LEX = flex
-#YACC = bison -y
+YACC = bison -y
 CC = g++
 LD = g++
 
 # Drapeaux
-CFLAGS = -I $(INC) -I $(DEP)
+CFLAGS = -I $(INC)
 LDFLAGS = -lfl
-#YFLAGS  = -d
+YFLAGS  = -d
+LFLAGS  =
 
 # Dossiers
 BIN = ./bin
@@ -19,59 +20,70 @@ SRC = ./src
 
 # Nom du parser et du lexer 
 LEXER = lexer
-#PARSER = parser
+PARSER = parser
 
 # Nom du programme
 EXEC = pseudo-compilo.exe
 
 # Nom des fichiers de test
-TEST_FILE = tri.pas
+TEST_FILE = test.pas
 
 # Création de la liste des objets à partir de celle des sources
-LSRCS = $(wildcard $(SRC)/*.l)
-#YSRCS = $(wildcard $(SRC)/*.y)
-CSRCS = $(wildcard $(SRC)/*.cpp)
-DEPS = $(YSRCS:$(SRC)/%.y=$(DEP)/%.cpp) $(LSRCS:$(SRC)/%.l=$(DEP)/%.cpp)
-OBJS = $(CSRCS:$(SRC)/%.cpp=$(OBJ)/%.o) $(DEPS:$(DEP)/%.cpp=$(OBJ)/%.o)
+LSRCS = $(SRC)/$(LEXER).l
+YSRCS = $(SRC)/$(PARSER).ypp
+CSRCS = $(YSRCS:$(SRC)/%.ypp=$(SRC)/%.cpp) $(LSRCS:$(SRC)/%.l=$(SRC)/%.cpp) $(wildcard $(SRC)/*.cpp)
+OBJS = $(CSRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
+DEPS = $(CSRCS:$(SRC)/%.cpp=$(DEP)/%.d)
 
+# Règle par défaut
 all: $(BIN)/$(EXEC)
 
-$(BIN)/%.exe: $(OBJS)
+# Génération du binaire exécutable
+$(BIN)/$(EXEC): $(OBJS)
 	@mkdir -p $(BIN)
 	$(LD) -o $@ $^ $(LDFLAGS) 
 
-$(OBJ)/$(LEXER).o: $(DEP)/$(LEXER).cpp $(INC)/$(LEXER).h
-	@mkdir -p $(OBJ)
-	$(CC) $(CFLAGS) -o $@ -c $<
-	
-$(OBJ)/$(PARSER).o: $(DEP)/$(PARSER).cpp $(DEP)/$(PARSER).h
+# Génération des fichiers objets
+$(OBJ)/%.o: $(SRC)/%.cpp
 	@mkdir -p $(OBJ)
 	$(CC) $(CFLAGS) -o $@ -c $< 
+
+# Génération de la source C++ de l'analyseur lexical
+$(SRC)/$(LEXER).cpp: $(SRC)/$(LEXER).l
+	$(LEX) $(LFLAGS) -o $@ $<
 	
-$(OBJ)/%.o: $(SRC)/%.cpp $(INC)/%.h
-	@mkdir -p $(OBJ)
-	$(CC) $(CFLAGS) -o $@ -c $< 
-	
-$(DEP)/$(LEXER).cpp: $(SRC)/$(LEXER).l
+# Génération de la source C++ de l'analyseur syntaxique
+$(SRC)/$(PARSER).cpp: $(SRC)/$(PARSER).ypp
+	$(YACC) $(YFLAGS) -o $@ $<
+	mv $(SRC)/$(PARSER).hpp $(INC)/$(PARSER).hpp
+
+# Génération des dépendances
+$(DEP)/%.d: $(SRC)/%.cpp
 	@mkdir -p $(DEP)
-	$(LEX) -o $@ $<
+	$(CC) $(CFLAGS) -MM -MD -o $@ $<
 
-#$(DEP)/$(PARSER).cpp: $(SRC)/$(PARSER).y
-#	@mkdir -p $(DEP)
-#	$(YACC) $(YFLAGS) -o $@ $<
-#	mv $(SRC)/$(PARSER).h $(DEP)/$(PARSER).h
+# Inclusion des dépendances
+#-include $(DEPS)
 
-.PHONY: exec clean distclean tmpclean
+.PHONY: exec clean distclean eradicator tmpclean
 
+# Règle d'exécution du programme avec fichier de test
 exec: $(BIN)/$(EXEC)
 	@echo Test du programme :
 	$(BIN)/$(EXEC) $(RES)/$(TEST_FILE)
 
+# Règle de nettoyage des fichiers intermédiaires
 clean:
-	rm -rf $(OBJ) $(DEP)
+	rm -rf $(OBJ)
 
+# Règle de nettoyage total des binaires
 distclean: clean
 	rm -rf $(BIN)
 
+# Règle de nettoyage total
+eradicator: distclean
+	rm -rf $(DEP) $(SRC)/$(LEXER).cpp $(SRC)/$(PARSER).cpp $(INC)/$(PARSER).hpp
+
+# Règle de nettoyage des fichiers temporaires de l'éditeur
 tmpclean:
 	rm -rf $(SRC)/*~ $(INC)/*~ ./*~

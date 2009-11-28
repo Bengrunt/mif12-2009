@@ -1,4 +1,4 @@
-#include "TypeBoolean.h"
+#include "TypeBoolean.hpp"
 
 /**
  * Constructeur.

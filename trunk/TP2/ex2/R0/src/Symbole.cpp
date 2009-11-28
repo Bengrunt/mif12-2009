@@ -1,4 +1,4 @@
-#include "Symbole.h"
+#include "Symbole.hpp"
 
 /* Destructeur */
 Symbole::~Symbole() {}

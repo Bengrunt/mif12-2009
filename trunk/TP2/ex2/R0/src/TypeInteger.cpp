@@ -1,4 +1,4 @@
-#include "TypeInteger.h"
+#include "TypeInteger.hpp"
 
 /**
  * Constructeur.

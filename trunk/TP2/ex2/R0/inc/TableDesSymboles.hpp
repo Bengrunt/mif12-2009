@@ -7,7 +7,7 @@
 /* Type de conteneur STL utilisé pour stocker les identificateurs. */
 #include <deque>
 
-#include "Symbole.h"
+#include "Symbole.hpp"
 
 class TableDesSymboles {
 	private:

@@ -2,7 +2,7 @@
 #define TYPE_INTEGER_DEF
 
 #include <cstring>
-#include "Type.h"
+#include "Type.hpp"
 /**
  * Classe de gestion d'un type entier du langage Pascal.
  */

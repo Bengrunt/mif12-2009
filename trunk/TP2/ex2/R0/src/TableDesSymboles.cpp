@@ -1,9 +1,9 @@
-#include "TableDesSymboles.h"
+#include "TableDesSymboles.hpp"
 
 TableDesSymboles::TableDesSymboles() {}
 
 void TableDesSymboles::print() const {
-	for(int i = 0; i < _symboles.size(); i++)
+	for(unsigned int i = 0; i < _symboles.size(); i++)
 		std::cout << "[" << i << "] -> " << _symboles[i]->getCategory() << " : " << _symboles[i]->getAttributes() << std::endl;
 }
 

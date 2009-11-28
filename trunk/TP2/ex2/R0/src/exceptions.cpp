@@ -1,4 +1,4 @@
-#include "exceptions.h"
+#include "exceptions.hpp"
 
 const char* UnknownBasicTypeException::what() const throw() {
 	return "Probleme : Type de base inconnu !";

@@ -4,7 +4,7 @@
 /* Inclusion des librairies C standard */
 #include <cstdlib>
 #include <cstring>
-#include "exceptions.h"
+#include "exceptions.hpp"
 
 /* Inclusion des librairies C++ standard */
 #include <iostream>

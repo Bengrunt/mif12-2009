@@ -1,4 +1,4 @@
-#include "TypeReal.h"
+#include "TypeReal.hpp"
 
 /**
  * Constructeur.

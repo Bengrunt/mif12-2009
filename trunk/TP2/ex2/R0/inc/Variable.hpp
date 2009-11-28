@@ -1,8 +1,8 @@
 #ifndef VARIABLE_DEF
 #define VARIABLE_DEF
 
-#include "Symbole.h"
-#include "Type.h"
+#include "Symbole.hpp"
+#include "Type.hpp"
 /**
  * Classe de gestion d'un symbole d'un programme en Pascal.
  */

@@ -1,4 +1,4 @@
-#include "TypeString.h"
+#include "TypeString.hpp"
 
 /**
  * Constructeur.
