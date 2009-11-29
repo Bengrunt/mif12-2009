@@ -19,8 +19,6 @@ extern char* yytext;
 
 TableDesIdentificateurs ti; /**< Table des indentificateurs. */
 TableDesSymboles ts; /**< Table des symboles. */
-
-Type* tmp = NULL;
 %}
 /* Mots clefs du langage */
 %token KW_PROGRAM
@@ -44,6 +42,14 @@ Type* tmp = NULL;
 
 /* Point de départ */
 %start Program
+
+%union {
+  Type* type;
+  ListeIdentificateurs* li;
+}
+
+%type<type> Type
+%type<li> ListIdent
 
 %%
 /* Programme */
@@ -79,33 +85,33 @@ ListDeclVar		:	ListDeclVar DeclVar
 DeclVar			:	ListIdent SEP_COL Type SEP_SCOL {
 						for(
 							unsigned int i = 0;
-							i < ((ListeIdentificateurs*)$1)->size();
+							i < $1->size();
 							i++
 						) {
-							try{ti.add(((ListeIdentificateurs*)$1)->get(i));}
+							try{ti.add($1->get(i));}
 							catch(AllocationException e) {
 								std::cerr << e.what() << std::endl;
 								exit(EXIT_FAILURE);
 							}
-							ts.add(new Variable((Type*)$3));
+							ts.add(new Variable($3));
 						}
-						delete (ListeIdentificateurs*) $1;
-						$1 = 0;
+						delete $1;
+						$1 = NULL;
 					}
 				;
 
 /* Liste d'identificateurs */
 ListIdent		:	ListIdent SEP_COMMA TOK_IDENT {
 						$$ = $1;
-						try{((ListeIdentificateurs*)$$)->add(yytext);}
+						try{$$->add(yytext);}
 						catch(AllocationException e) {
 							std::cerr << e.what() << std::endl;
 							exit(EXIT_FAILURE);
 						}
 					}
 				|	TOK_IDENT {
-						$$ = (int) new ListeIdentificateurs();
-						try{((ListeIdentificateurs*)$$)->add(yytext);}
+						$$ = new ListeIdentificateurs();
+						try{$$->add(yytext);}
 						catch(AllocationException e) {
 							std::cerr << e.what() << std::endl;
 							exit(EXIT_FAILURE);
@@ -114,21 +120,11 @@ ListIdent		:	ListIdent SEP_COMMA TOK_IDENT {
 				;
 
 /* Type de base */
-Type			:	KW_INTEGER {
-						$$ = (int) new TypeInteger();
-					}
-                |	KW_REAL {
-						$$ = (int) new TypeReal();
-					}
-                |	KW_BOOLEAN {
-						$$ = (int) new TypeBoolean();
-					}
-                |	KW_CHAR {
-						$$ = (int) new TypeChar();
-					}
-                |	KW_STRING {
-						$$ = (int) new TypeString();
-					}
+Type			:	KW_INTEGER      {$$ = new TypeInteger();}
+                |	KW_REAL         {$$ = new TypeReal();}
+                |	KW_BOOLEAN      {$$ = new TypeBoolean();}
+                |	KW_CHAR         {$$ = new TypeChar();}
+                |	KW_STRING       {$$ = new TypeString();}
                 ;
 
 /* Bloc de code */
@@ -137,7 +133,7 @@ BlockCode		:	KW_BEGIN KW_END
 
 %%
 
-int main ( int argc, char** argv ) {
+int main (int argc, char** argv) {
 	/* Vérification arguments. */
 	if(argc != 2) {
 		std::cerr << "Erreur : Vous devez passer une source Pascal en argument." << std::endl;

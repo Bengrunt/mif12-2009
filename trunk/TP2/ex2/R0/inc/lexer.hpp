@@ -6,6 +6,7 @@
 
 /* Inclusion des bibliothèques du projet. */
 #include "TableDesIdentificateurs.hpp"
+#include "ListeIdentificateurs.hpp"
 #include "Type.hpp"
 #include "parser.hpp"
 
