@@ -1,6 +1,7 @@
 #ifndef SYMBOLE_DEF
 #define SYMBOLE_DEF
-/**
+
+/**
  * Classe de gestion d'un symbole d'un programme en Pascal.
  */
 class Symbole {
@@ -27,6 +28,3 @@ class Symbole {
 };
 
 #endif
-
-
-

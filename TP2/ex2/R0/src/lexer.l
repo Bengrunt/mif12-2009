@@ -1,9 +1,9 @@
 %{
 #include "lexer.hpp"
 %}
-/*KW_TYPE				"type"*/
-/*KW_FUNCTION			"function"*/
-/*KW_PROCEDURE		"procedure"*/
+KW_TYPE				"type"
+KW_FUNCTION			"function"
+KW_PROCEDURE		"procedure"
 KW_PROGRAM			"program" 
 KW_VAR				"var"
 KW_BEGIN			"begin"
@@ -25,24 +25,24 @@ SEP_COMMA			","
 TOK_IDENT 			[a-zA-Z][a-zA-Z0-9]*
 
 %%
-{KW_PROGRAM}		return KW_PROGRAM;
-{KW_VAR}			return KW_VAR;
-{KW_BEGIN}			return KW_BEGIN;
-{KW_END}			return KW_END;
-{KW_INTEGER}		return KW_INTEGER;
-{KW_REAL}			return KW_REAL;
-{KW_BOOLEAN}		return KW_BOOLEAN;
-{KW_CHAR}			return KW_CHAR;
-{KW_STRING}			return KW_STRING;
+{KW_PROGRAM}		{return KW_PROGRAM;}
+{KW_VAR}			{return KW_VAR;}
+{KW_BEGIN}			{return KW_BEGIN;}
+{KW_END}			{return KW_END;}
+{KW_INTEGER}		{return KW_INTEGER;}
+{KW_REAL}			{return KW_REAL;}
+{KW_BOOLEAN}		{return KW_BOOLEAN;}
+{KW_CHAR}			{return KW_CHAR;}
+{KW_STRING}			{return KW_STRING;}
 
-{SEP_DOT}			return SEP_DOT;
-{SEP_COL}			return SEP_COL;
-{SEP_SCOL}			return SEP_SCOL;
-{SEP_COMMA}			return SEP_COMMA;
+{SEP_DOT}			{return SEP_DOT;}
+{SEP_COL}			{return SEP_COL;}
+{SEP_SCOL}			{return SEP_SCOL;}
+{SEP_COMMA}			{return SEP_COMMA;}
 
-{TOK_IDENT}			return TOK_IDENT;
+{TOK_IDENT}			{return TOK_IDENT;}
 .					;
-\n              ;
+\n              	;
 
 %%
 int yyerror(char* m) {

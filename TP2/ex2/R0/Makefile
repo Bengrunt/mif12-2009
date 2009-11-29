@@ -47,15 +47,16 @@ $(BIN)/$(EXEC): $(OBJS)
 $(OBJ)/%.o: $(SRC)/%.cpp
 	@mkdir -p $(OBJ)
 	$(CC) $(CFLAGS) -o $@ -c $< 
-
-# Génération de la source C++ de l'analyseur lexical
-$(SRC)/$(LEXER).cpp: $(SRC)/$(LEXER).l
-	$(LEX) $(LFLAGS) -o $@ $<
-	
 # Génération de la source C++ de l'analyseur syntaxique
 $(SRC)/$(PARSER).cpp: $(SRC)/$(PARSER).ypp
 	$(YACC) $(YFLAGS) -o $@ $<
 	mv $(SRC)/$(PARSER).hpp $(INC)/$(PARSER).hpp
+
+$(INC)/$(PARSER).hpp: $(SRC)/$(PARSER).cpp
+
+# Génération de la source C++ de l'analyseur lexical
+$(SRC)/$(LEXER).cpp: $(SRC)/$(LEXER).l $(INC)/$(PARSER).hpp
+	$(LEX) $(LFLAGS) -o $@ $<
 
 # Génération des dépendances
 $(DEP)/%.d: $(SRC)/%.cpp
