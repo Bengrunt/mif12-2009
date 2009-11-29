@@ -1,7 +1,9 @@
 %{
 #include <iostream>
+#include "ListeIdentificateurs.hpp"
 #include "TableDesIdentificateurs.hpp"
 #include "TableDesSymboles.hpp"
+#include "Program.hpp"
 #include "Variable.hpp"
 #include "TypeBoolean.hpp"
 #include "TypeChar.hpp"
@@ -17,6 +19,8 @@ extern char* yytext;
 
 TableDesIdentificateurs ti; /**< Table des indentificateurs. */
 TableDesSymboles ts; /**< Table des symboles. */
+
+Type* tmp = NULL;
 %}
 /* Mots clefs du langage */
 %token KW_PROGRAM
@@ -53,6 +57,7 @@ ProgramHeader	:	KW_PROGRAM TOK_IDENT {
 							std::cerr << e.what() << std::endl;
 							exit(EXIT_FAILURE);
 						}
+						ts.add(new Program());
 					}
 				;
 
@@ -71,19 +76,36 @@ ListDeclVar		:	ListDeclVar DeclVar
 				;
 
 /* Déclaration de variables */
-DeclVar			:	ListIdent SEP_COL Type SEP_SCOL
+DeclVar			:	ListIdent SEP_COL Type SEP_SCOL {
+						for(
+							unsigned int i = 0;
+							i < ((ListeIdentificateurs*)$1)->size();
+							i++
+						) {
+							try{ti.add(((ListeIdentificateurs*)$1)->get(i));}
+							catch(AllocationException e) {
+								std::cerr << e.what() << std::endl;
+								exit(EXIT_FAILURE);
+							}
+							ts.add(new Variable((Type*)$3));
+						}
+						delete (ListeIdentificateurs*) $1;
+						$1 = 0;
+					}
 				;
 
 /* Liste d'identificateurs */
 ListIdent		:	ListIdent SEP_COMMA TOK_IDENT {
-						try{ti.add(yytext);}
+						$$ = $1;
+						try{((ListeIdentificateurs*)$$)->add(yytext);}
 						catch(AllocationException e) {
 							std::cerr << e.what() << std::endl;
 							exit(EXIT_FAILURE);
 						}
 					}
 				|	TOK_IDENT {
-						try{ti.add(yytext);}
+						$$ = (int) new ListeIdentificateurs();
+						try{((ListeIdentificateurs*)$$)->add(yytext);}
 						catch(AllocationException e) {
 							std::cerr << e.what() << std::endl;
 							exit(EXIT_FAILURE);
@@ -93,19 +115,19 @@ ListIdent		:	ListIdent SEP_COMMA TOK_IDENT {
 
 /* Type de base */
 Type			:	KW_INTEGER {
-						ts.add(new Variable(new TypeInteger()));
+						$$ = (int) new TypeInteger();
 					}
                 |	KW_REAL {
-						ts.add(new Variable(new TypeReal()));
+						$$ = (int) new TypeReal();
 					}
                 |	KW_BOOLEAN {
-						ts.add(new Variable(new TypeBoolean()));
+						$$ = (int) new TypeBoolean();
 					}
                 |	KW_CHAR {
-						ts.add(new Variable(new TypeChar()));
+						$$ = (int) new TypeChar();
 					}
                 |	KW_STRING {
-						ts.add(new Variable(new TypeString()));
+						$$ = (int) new TypeString();
 					}
                 ;
 

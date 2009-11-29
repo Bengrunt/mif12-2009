@@ -4,13 +4,14 @@
 /* Inclusion des librairies C standard */
 #include <cstdlib>
 #include <cstring>
-#include "exceptions.hpp"
 
 /* Inclusion des librairies C++ standard */
 #include <iostream>
 
 /* Type de conteneur STL utilisé pour stocker les identificateurs. */
 #include <deque>
+
+#include "exceptions.hpp"
 
 class TableDesIdentificateurs {
 	private:
