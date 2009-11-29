@@ -63,9 +63,9 @@ $(DEP)/%.d: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) -MM -MD -o $@ $<
 
 # Inclusion des dépendances
-#-include $(DEPS)
+-include $(DEPS)
 
-.PHONY: exec clean distclean eradicator tmpclean
+.PHONY: all exec clean distclean eradicator tmpclean
 
 # Règle d'exécution du programme avec fichier de test
 exec: $(BIN)/$(EXEC)
