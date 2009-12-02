@@ -1,0 +1,199 @@
+%{
+#include <iostream>
+#include "ListeIdentificateurs.hpp"
+#include "TableDesIdentificateurs.hpp"
+#include "TableDesSymboles.hpp"
+#include "Program.hpp"
+#include "Variable.hpp"
+#include "TypeBoolean.hpp"
+#include "TypeChar.hpp"
+#include "TypeInteger.hpp"
+#include "TypeReal.hpp"
+#include "TypeString.hpp"
+#include "TypePointer.hpp"
+#include "TypeInterval.hpp"
+
+/* Ressources définies dans le lexer.cpp. */
+extern int yyerror(char* m);
+extern int yylex();
+extern FILE* yyin;
+extern char* yytext;
+
+TableDesIdentificateurs ti; /**< Table des indentificateurs. */
+TableDesSymboles ts; /**< Table des symboles. */
+%}
+/* Mots clefs du langage */
+%token KW_PROGRAM
+%token KW_VAR
+%token KW_BEGIN
+%token KW_END
+%token KW_INTEGER
+%token KW_REAL
+%token KW_BOOLEAN
+%token KW_CHAR
+%token KW_STRING
+
+/* Séparateurs du langage */
+%token SEP_SCOL
+%token SEP_DOT
+%token SEP_COL
+%token SEP_COMMA
+%token SEP_DOTDOT
+
+/* Opérateurs. */
+%token OP_PTR
+%token OP_SUB
+
+/* Element */
+%token TOK_IDENT
+%token TOK_INTEGER
+
+/* Point de départ */
+%start Program
+
+%union {
+  Type* type;
+  ListeIdentificateurs* li;
+  char c;
+}
+
+%type<type> Type
+%type<li> ListIdent
+
+%%
+/* Programme */
+Program			:	ProgramHeader SEP_SCOL Block SEP_DOT
+				;
+
+/* En-tête du programme */
+ProgramHeader	:	KW_PROGRAM TOK_IDENT {
+						try{ti.add(yytext);}
+						catch(AllocationException e) {
+							std::cerr << e.what() << std::endl;
+							exit(EXIT_FAILURE);
+						}
+						ts.add(new Program());
+					}
+				;
+
+/* Bloc de programme, procédure ou fonction */
+Block			:	BlockDeclVar BlockCode
+				;
+
+/* Bloc de déclaration de variables */
+BlockDeclVar 	:	KW_VAR ListDeclVar
+				|
+				;
+
+/* Liste de déclaration de variables */		
+ListDeclVar		:	ListDeclVar DeclVar
+				|	DeclVar
+				;
+
+/* Déclaration de variables */
+DeclVar			:	ListIdent SEP_COL Type SEP_SCOL {
+						for(
+							unsigned int i = 0;
+							i < $1->size();
+							i++
+						) {
+							try{ti.add($1->get(i));}
+							catch(AllocationException e) {
+								std::cerr << e.what() << std::endl;
+								exit(EXIT_FAILURE);
+							}
+							ts.add(new Variable($3));
+						}
+						delete $1;
+						$1 = NULL;
+					}
+				;
+
+/* Liste d'identificateurs */
+ListIdent		:	ListIdent SEP_COMMA TOK_IDENT {
+						$$ = $1;
+						try{$$->add(yytext);}
+						catch(AllocationException e) {
+							std::cerr << e.what() << std::endl;
+							exit(EXIT_FAILURE);
+						}
+					}
+				|	TOK_IDENT {
+						$$ = new ListeIdentificateurs();
+						try{$$->add(yytext);}
+						catch(AllocationException e) {
+							std::cerr << e.what() << std::endl;
+							exit(EXIT_FAILURE);
+						}
+					}
+				;
+
+/* Type de base */
+Type			:	KW_INTEGER      {$$ = new TypeInteger();}
+                |	KW_REAL         {$$ = new TypeReal();}
+                |	KW_BOOLEAN      {$$ = new TypeBoolean();}
+                |	KW_CHAR         {$$ = new TypeChar();}
+                |	KW_STRING       {$$ = new TypeString();}
+				|	OP_PTR Type		{$$ = new TypePointer($2);}
+                ;
+
+/* Intervale. */
+InterType      : InterBase SEP_DOTDOT InterBase
+               ;
+InterBase      : NSInterBase
+               | OP_SUB NSInterBase
+               ;
+NSInterBase    : TOK_IDENT
+               | TOK_INTEGER
+			   ;
+
+
+/* Bloc de code */
+BlockCode		:	KW_BEGIN KW_END
+                ;
+
+%%
+
+int main (int argc, char** argv) {
+	/* Vérification arguments. */
+	if(argc != 2) {
+		std::cerr << "Erreur : Vous devez passer une source Pascal en argument." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	yyin = fopen(argv[1], "r");
+	if(yyin == NULL) {
+		return EXIT_FAILURE;
+	}
+	
+    yyparse();
+	
+	TypeInterval::Boundary min = {false, -6}, max = {false, 88};
+	TypeInterval* i = new TypeInterval(min, max);
+	char* result = i->getName();
+	
+	std::cout << "Test : " << result << std::endl;
+	
+	max.id = true;
+	max.data.iVal = 777;
+	i->setMaximum(max);
+	result = i->getName();
+	
+	std::cout << "Test : " << result << std::endl;
+	
+	min.id = true;
+	min.data.iVal = 786899873;
+	i->setMinimum(min);
+	result = i->getName();
+	
+	std::cout << "Test : " << result << std::endl;
+	
+	std::cout << "Table des identificateurs : ----------------------------------------------------" << std::flush;
+	ti.print();
+	std::cout << "Table des symboles : -----------------------------------------------------------" << std::flush;
+	ts.print();
+	
+    fclose(yyin);
+	
+	return EXIT_SUCCESS;
+}
