@@ -43,10 +43,10 @@ class TypeInterval : public Type {
 		char* _nameFormat;
 		
 		/** Borne inférieure. */
-		TypeInterval::Boundary _minimum;
+		Boundary _minimum;
 		
 		/** Borne supérieure. */
-		TypeInterval::Boundary _maximum;
+		Boundary _maximum;
 		
 		/**
 		 * Mets à jour le format par rapport aux bornes.
@@ -65,7 +65,7 @@ class TypeInterval : public Type {
 		 * @param[in] minimum Borne inférieure.
 		 * @param[in] minimum Borne supérieure.
 		 */
-		TypeInterval(const TypeInterval::Boundary minimum, const TypeInterval::Boundary maximum);
+		TypeInterval(const Boundary minimum, const Boundary maximum);
 
 		/**
 		 * Destructeur.
@@ -77,28 +77,28 @@ class TypeInterval : public Type {
 		 *
 		 * @param[in] minimum Borne inférieure.
 		 */
-		void setMinimum(const TypeInterval::Boundary minimum);
+		void setMinimum(const Boundary minimum);
 		
 		/**
 		 * Accesseurde la borne inférieure de l'intervalle.
 		 *
 		 * @return Borne inférieure.
 		 */
-		TypeInterval::Boundary getMinimum() const;
+		Boundary getMinimum() const;
 		
 		/**
 		 * Modificateur de la borne supérieure de l'intervalle.
 		 *
 		 * @param[in] maximum Borne supérieure.
 		 */
-		void setMaximum(const TypeInterval::Boundary maximum);
+		void setMaximum(const Boundary maximum);
 		
 		/**
 		 * Accesseurde la borne supérieure de l'intervalle.
 		 *
 		 * @return Borne supérieure.
 		 */
-		TypeInterval::Boundary getMaximum() const;
+		Boundary getMaximum() const;
 };
 
 #endif

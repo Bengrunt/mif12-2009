@@ -33,7 +33,7 @@ TypeInterval::TypeInterval(
 /**
  * Destructeur.
  */
-TypeInterval::~TypeInterval() {
+TypeInterval::~TypeInterval() {	
 	delete[] _nameFormat;
 	delete[] _name;
 }

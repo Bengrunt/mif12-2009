@@ -154,7 +154,6 @@ NSInterBase    : TOK_IDENT		{$$.id = true; $$.data.id = ti.getId(yytext);}
                | TOK_CHAR		{$$.id = false; $$.data.iVal = (int) yytext[1];}
 			   ;
 
-
 /* Bloc de code */
 BlockCode		:	KW_BEGIN KW_END
                 ;
