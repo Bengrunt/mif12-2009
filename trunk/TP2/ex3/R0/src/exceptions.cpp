@@ -11,3 +11,7 @@ const char* NullPointerException::what() const throw() {
 const char* AllocationException::what() const throw() {
 	return "Probleme rencontre lors de l'allocation !";
 }
+
+const char* OutOfBoundsException::what() const throw() {
+	return "Probleme : Sortie de tableau !";
+}

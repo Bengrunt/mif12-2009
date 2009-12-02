@@ -26,3 +26,10 @@ void TableDesIdentificateurs::add(const char* str) {
 	ids.push_back(tmp);
 }
 
+unsigned int TableDesIdentificateurs::getId(const char* str) {
+	for(unsigned int i = 0; i < ids.size(); i++) {
+		if(strcmp(ids[i], str) == 0) {
+			return i;
+		}
+	}
+}
