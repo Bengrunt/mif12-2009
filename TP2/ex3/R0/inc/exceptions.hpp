@@ -17,8 +17,18 @@ class NullPointerException {
 		/** Message d'erreur à retourner. */
 		const char* what() const throw();
 };
-
+/**
+ * Classe d'exception allocation foirée
+ */
 class AllocationException {
+	public:
+		/** Message d'erreur à retourner. */
+		const char* what() const throw();
+};
+/**
+ * Classe d'exception hors bornes
+ */
+class OutOfBoundsException {
 	public:
 		/** Message d'erreur à retourner. */
 		const char* what() const throw();

@@ -38,7 +38,8 @@ OP_AFFECT			":="
 /*COMMENT_END 		\*\)*/
 
 TOK_IDENT 			[a-zA-Z][a-zA-Z0-9]*
-TOK_INTEGER			{[0-9]+}
+TOK_INTEGER			[0-9]+
+TOK_CHAR			\'[a-zA-Z]\'
 
 %%
 {KW_PROGRAM}		{return KW_PROGRAM;}
@@ -52,6 +53,7 @@ TOK_INTEGER			{[0-9]+}
 {KW_STRING}			{return KW_STRING;}
 
 {SEP_DOT}			{return SEP_DOT;}
+{SEP_DOTDOT}		{return SEP_DOTDOT;}
 {SEP_COL}			{return SEP_COL;}
 {SEP_SCOL}			{return SEP_SCOL;}
 {SEP_COMMA}			{return SEP_COMMA;}
@@ -60,6 +62,8 @@ TOK_INTEGER			{[0-9]+}
 {OP_SUB}			{return OP_SUB;}
 
 {TOK_IDENT}			{return TOK_IDENT;}
+{TOK_INTEGER}		{return TOK_INTEGER;}
+{TOK_CHAR}			{return TOK_CHAR;}
 .					;
 \n              	;
 

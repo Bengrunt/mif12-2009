@@ -12,5 +12,5 @@ char* Program::getCategory() const {
 }
 
 char* Program::getAttributes() const {
-	return "";
+	return (char*) "";
 }

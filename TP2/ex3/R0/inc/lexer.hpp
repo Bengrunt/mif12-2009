@@ -8,6 +8,7 @@
 #include "TableDesIdentificateurs.hpp"
 #include "ListeIdentificateurs.hpp"
 #include "Type.hpp"
+#include "TypeInterval.hpp"
 #include "parser.hpp"
 
 int yyerror(char* m);

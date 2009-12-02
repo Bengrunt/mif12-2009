@@ -47,6 +47,7 @@ TableDesSymboles ts; /**< Table des symboles. */
 /* Element */
 %token TOK_IDENT
 %token TOK_INTEGER
+%token TOK_CHAR
 
 /* Point de départ */
 %start Program
@@ -54,11 +55,15 @@ TableDesSymboles ts; /**< Table des symboles. */
 %union {
   Type* type;
   ListeIdentificateurs* li;
-  char c;
+  TypeInterval::Boundary bound;
+  TypeInterval* ti;
 }
 
 %type<type> Type
 %type<li> ListIdent
+%type<bound> NSInterBase
+%type<bound> InterBase
+%type<ti> InterType
 
 %%
 /* Programme */
@@ -135,16 +140,18 @@ Type			:	KW_INTEGER      {$$ = new TypeInteger();}
                 |	KW_CHAR         {$$ = new TypeChar();}
                 |	KW_STRING       {$$ = new TypeString();}
 				|	OP_PTR Type		{$$ = new TypePointer($2);}
+				|   InterType		{$$ = $1;}
                 ;
 
-/* Intervale. */
-InterType      : InterBase SEP_DOTDOT InterBase
+/* Intervalle. */
+InterType      : InterBase SEP_DOTDOT InterBase	{$$ = new TypeInterval($1, $3);}
                ;
-InterBase      : NSInterBase
-               | OP_SUB NSInterBase
+InterBase      : NSInterBase			{$$ = $1;}
+               | OP_SUB NSInterBase		{$2.data.iVal = -$2.data.iVal; $$ = $2;}
                ;
-NSInterBase    : TOK_IDENT
-               | TOK_INTEGER
+NSInterBase    : TOK_IDENT		{$$.id = true; $$.data.id = ti.getId(yytext);}
+               | TOK_INTEGER	{$$.id = false; $$.data.iVal = atoi(yytext);}
+               | TOK_CHAR		{$$.id = false; $$.data.iVal = (int) yytext[1];}
 			   ;
 
 
@@ -167,7 +174,7 @@ int main (int argc, char** argv) {
 	}
 	
     yyparse();
-	
+	/*
 	TypeInterval::Boundary min = {false, -6}, max = {false, 88};
 	TypeInterval* i = new TypeInterval(min, max);
 	char* result = i->getName();
@@ -187,7 +194,7 @@ int main (int argc, char** argv) {
 	result = i->getName();
 	
 	std::cout << "Test : " << result << std::endl;
-	
+	*/
 	std::cout << "Table des identificateurs : ----------------------------------------------------" << std::flush;
 	ti.print();
 	std::cout << "Table des symboles : -----------------------------------------------------------" << std::flush;

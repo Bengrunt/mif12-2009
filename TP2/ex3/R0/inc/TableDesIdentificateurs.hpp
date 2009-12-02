@@ -28,9 +28,17 @@ class TableDesIdentificateurs {
 		/**
 		 * Ajout d'un nouvel identificateur.
 		 * 
-		 * @param str Nom identificateur.
+		 * @param[in] str Nom identificateur.
 		 */
 		void add(const char* str);
+
+		/**
+		 * Retour id d'un identifiant
+		 * 
+		 * @param[in] str Nom identificateur.
+		 * @return unsigned int Id.
+		 */
+		unsigned int getId(const char* str);
 };
 
 #endif
