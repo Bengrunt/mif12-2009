@@ -2,7 +2,7 @@
 #define TYPE_ARRAY_DEF
 
 #include <cstring>
-#include <deque>
+#include <vector>
 #include "Type.hpp"
 #include "TypeInterval.hpp"
 #include "exceptions.hpp"
@@ -16,14 +16,14 @@ class TypeArray : public Type {
 		Type* _type;
 
 		/** Bornes du tableau. */
-		std::deque<TypeInterval*> _intervals;
+		std::vector<TypeInterval*>* _intervals;
 	public:
 		/**
 		 * Constructeur.
 		 *
 		 * @param[in] type Type de la référence.
 		 */
-		TypeArray(const Type* type, const std::deque<TypeInterval*>& intervals);
+		TypeArray(const Type* type, const std::vector<TypeInterval*>* intervals);
 
 		/**
 		 * Destructeur.
@@ -49,14 +49,14 @@ class TypeArray : public Type {
 		 *
 		 * @param[in] intervals Liste d'intervalles.
 		 */
-		void setIntervals(const std::deque<TypeInterval*>& intervals);
+		void setIntervals(const std::vector<TypeInterval*>* intervals);
 	
 		/**
 		 * Accesseur des intervalles.
 		 *
 		 * @return Liste des intervalles.
 		 */
-		std::deque<TypeInterval*>& getIntervals() const;
+		std::vector<TypeInterval*>* getIntervals() const;
 };
 
 #endif
