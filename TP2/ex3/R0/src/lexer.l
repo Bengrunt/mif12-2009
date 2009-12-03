@@ -13,12 +13,25 @@ KW_REAL				"real"
 KW_BOOLEAN			"boolean"
 KW_CHAR				"char"
 KW_STRING			"string"
+KW_ARRAY			"array"
+KW_OF				"of"
+KW_RECORD			"record"
+KW_DIV				"div"
+KW_MOD				"mod"
+KW_AND				"and"
+KW_OR				"or"
+KW_XOR				"xor"
+KW_NOT				"not"
 
 SEP_DOT				"."
 SEP_DOTDOT			".."
 SEP_COL				":"
 SEP_SCOL			";"
 SEP_COMMA			","
+SEP_CO				"["
+SEP_CF				"]"
+SEP_PO				"("
+SEP_PF				")"
 
 OP_EQ				"="
 OP_NEQ				"<>"
@@ -34,12 +47,17 @@ OP_EXP				"**"
 OP_PTR				"->"|"^"
 OP_AFFECT			":="
 
-/*COMMENT_BEGIN 		\(\**/
-/*COMMENT_END 		\*\)*/
+chiffre				[0-9]
+chiffres			{chiffre}+
+alpha				[a-zA-Z]
+alphanum			[a-zA-Z0-9]
 
-TOK_IDENT 			[a-zA-Z][a-zA-Z0-9]*
-TOK_INTEGER			[0-9]+
-TOK_CHAR			\'[a-zA-Z]\'
+TOK_IDENT 			{alpha}{alphanum}*
+TOK_INTEGER			{chiffres}
+TOK_REAL			{chiffres}.{chiffres}(E(\+|\-)?{chiffres})?
+TOK_PTR				"nil"
+TOK_CHAR			\'{alphanum}\'
+TOK_STRING			\'([^\']|\'\')+\'
 
 %%
 {KW_PROGRAM}		{return KW_PROGRAM;}
@@ -51,19 +69,46 @@ TOK_CHAR			\'[a-zA-Z]\'
 {KW_BOOLEAN}		{return KW_BOOLEAN;}
 {KW_CHAR}			{return KW_CHAR;}
 {KW_STRING}			{return KW_STRING;}
+{KW_ARRAY}			{return KW_ARRAY;}
+{KW_OF}				{return KW_OF;}
+{KW_RECORD}			{return KW_RECORD;}
+{KW_DIV}			{return KW_DIV;}
+{KW_MOD}			{return KW_MOD;}
+{KW_AND}			{return KW_AND;}
+{KW_OR}				{return KW_OR;}
+{KW_XOR}			{return KW_XOR;}
+{KW_NOT}			{return KW_NOT;}
 
 {SEP_DOT}			{return SEP_DOT;}
 {SEP_DOTDOT}		{return SEP_DOTDOT;}
 {SEP_COL}			{return SEP_COL;}
 {SEP_SCOL}			{return SEP_SCOL;}
 {SEP_COMMA}			{return SEP_COMMA;}
+{SEP_CO}			{return SEP_CO;}
+{SEP_CF}			{return SEP_CF;}
+{SEP_PO}			{return SEP_PO;}
+{SEP_PF}			{return SEP_PF;}
 
-{OP_PTR}			{return OP_PTR;}
+{OP_EQ}				{return OP_EQ;}
+{OP_NEQ}			{return OP_NEQ;}
+{OP_LT}				{return OP_LT;}
+{OP_LTE}			{return OP_LTE;}
+{OP_GT}				{return OP_GT;}
+{OP_GTE}			{return OP_GTE;}
+{OP_ADD}			{return OP_ADD;}
 {OP_SUB}			{return OP_SUB;}
+{OP_MUL}			{return OP_MUL;}
+{OP_SLASH}			{return OP_SLASH;}
+{OP_EXP}			{return OP_EXP;}
+{OP_PTR}			{return OP_PTR;}
+{OP_AFFECT}			{return OP_AFFECT;}
 
-{TOK_IDENT}			{return TOK_IDENT;}
 {TOK_INTEGER}		{return TOK_INTEGER;}
+{TOK_REAL}			{return TOK_REAL;}
 {TOK_CHAR}			{return TOK_CHAR;}
+{TOK_PTR}			{return TOK_PTR;}
+{TOK_STRING}		{return TOK_STRING;}
+{TOK_IDENT}			{return TOK_IDENT;}
 .					;
 \n              	;
 
