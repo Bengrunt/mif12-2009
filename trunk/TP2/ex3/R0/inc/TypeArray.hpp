@@ -23,7 +23,7 @@ class TypeArray : public Type {
 		 *
 		 * @param[in] type Type de la référence.
 		 */
-		TypeArray(const Type* type, std::deque<TypeInterval*> intervals);
+		TypeArray(const Type* type, const std::deque<TypeInterval*>& intervals);
 
 		/**
 		 * Destructeur.
@@ -49,14 +49,14 @@ class TypeArray : public Type {
 		 *
 		 * @param[in] intervals Liste d'intervalles.
 		 */
-		void setIntervals(const std::deque<TypeInterval*>* intervals);
+		void setIntervals(const std::deque<TypeInterval*>& intervals);
 	
 		/**
 		 * Accesseur des intervalles.
 		 *
 		 * @return Liste des intervalles.
 		 */
-		std::deque<TypeInterval*>* getIntervals() const;
+		std::deque<TypeInterval*>& getIntervals() const;
 };
 
 #endif
