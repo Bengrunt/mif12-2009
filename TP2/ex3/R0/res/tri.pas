@@ -1,6 +1,6 @@
 program trier;
 
-type tarray : array [ 1.. 10 ] of integer;
+type tarray : array [ 1..10 ] of integer;
 var t0, t1, t2 : tarray;
 
 procedure remplirTab ( var dest : tarray );
@@ -19,7 +19,7 @@ procedure copyTab ( src : tarray ; var dest : tarray );
 var i : integer;
 begin
 	for i := 1 to 10 do
-		dest [ i ] := src [ i ];
+		dest [ i ] := src [ i ]
 end;
 
 (*
@@ -68,7 +68,7 @@ begin
 			If dest[i]>dest[j] then begin
 				t:=dest[i];
 				dest[i]:=dest[j];
-				dest[j]:=t;
+				dest[j]:=t
 			end;
 end;
 
@@ -77,5 +77,5 @@ begin
 	triMinimum ( t0, t1 );
 	triABulles ( t0, t2 );
 	afficherTab ( t1 );
-	afficherTab ( t2 );
+	afficherTab ( t2 )
 end.
