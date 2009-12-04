@@ -35,8 +35,8 @@ KW_IF				"if"
 KW_THEN				"then"
 KW_DOWNTO			"downto"
 
-SEP_DOT				\.
-SEP_DOTDOT			\.\.
+SEP_DOT				"."
+SEP_DOTDOT			".."
 SEP_COL				":"
 SEP_SCOL			";"
 SEP_COMMA			","
@@ -61,8 +61,8 @@ OP_AFFECT			":="
 
 chiffre				[0-9]
 chiffres			{chiffre}+
-alpha				[a-z]|[A-Z]
-alphanum			[a-z]|[A-Z]|[0-9]
+alpha				[a-zA-Z]
+alphanum			{alpha}|{chiffre}
 
 TOK_IDENT 			{alpha}{alphanum}*
 TOK_INTEGER			{chiffres}
