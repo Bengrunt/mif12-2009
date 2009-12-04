@@ -2,7 +2,7 @@
 #include "cstdio"
 
 /* Initialisation des constantes de classe. */
-const char* TypeInterval::_genericNameFormat = "interval [%s..%s]";
+const char* TypeInterval::_genericNameFormat = "interval %s..%s";
 const char* TypeInterval::_tags[] = {"\%s", "\%d", "\%u"};
 const char* TypeInterval::_idFormat = "{id:%u}";
 const char* TypeInterval::_iValFormat = "%d";

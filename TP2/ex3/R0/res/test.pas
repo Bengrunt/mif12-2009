@@ -7,6 +7,7 @@ var v0, v1 : integer;
 	pi	   : ^integer;
 	inter2 : v0..-888;
 	inter3 : 'a'..'R';
+	rtab   : array [ 1 .. 10 ] of array [ 1 .. 10 , 1 .. 2 ] of real;
 	preal1, preal2 : ^^real;
     temp   : string;
 begin

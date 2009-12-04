@@ -173,7 +173,13 @@ DeclType       : TOK_IDENT SEP_COL Type SEP_SCOL
                ;
 
 /* Déclaration de variables */
-DeclVar			:	ListIdent SEP_COL Type SEP_SCOL {
+BlockDeclVar   :    KW_VAR ListDeclVar
+               |
+               ;
+ListDeclVar    :    ListDeclVar DeclVar
+               |    DeclVar
+               ;
+DeclVar		   :	ListIdent SEP_COL Type SEP_SCOL {
 						for(
 							unsigned int i = 0;
 							i < $1->size();
@@ -265,8 +271,8 @@ FuncIdent      : KW_FUNCTION TOK_IDENT
 FuncResult     : SEP_COL TOK_IDENT
                ;
 /* Type de base */
-Type           : /* Fait buguer les intervalles ?!? */ TOK_IDENT
-			   | UserType		{$$ = $1;}
+Type           : /* Fait buguer les intervalles ?!?  TOK_IDENT
+			   | */ UserType		{$$ = $1;}
 			   | BaseType		{$$ = $1;}
                ;
 			   
@@ -289,7 +295,7 @@ EnumType       : SEP_PO ListIdent SEP_PF
                ;
 
 /* Intervalle. */
-InterType      : InterBase {printf("%s\n",yytext);} SEP_DOTDOT {printf("%s\n",yytext);} InterBase {printf("%s\n",yytext);}	/*{$$ = new TypeInterval($1, $3);}*/
+InterType      : InterBase SEP_DOTDOT InterBase {$$ = new TypeInterval($1, $3);}
                ;
 InterBase    :   TOK_INTEGER		{$$.id = false; $$.data.iVal = atoi(yytext);}
                | OP_SUB TOK_INTEGER	{$$.id = false; $$.data.iVal = -atoi(yytext);}
