@@ -36,7 +36,10 @@ OBJS = $(CSRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
 DEPS = $(CSRCS:$(SRC)/%.cpp=$(DEP)/%.d)
 
 # Règle par défaut
-all: $(BIN)/$(EXEC)
+all: $(BIN)/$(EXEC) readme
+
+readme:
+	cat $(RES)/README.txt
 
 # Génération du binaire exécutable
 $(BIN)/$(EXEC): $(OBJS)
@@ -66,7 +69,7 @@ $(DEP)/%.d: $(SRC)/%.cpp
 # Inclusion des dépendances
 -include $(DEPS)
 
-.PHONY: all exec clean distclean eradicator tmpclean
+.PHONY: all exec clean distclean eradicator tmpclean readme
 
 # Règle d'exécution du programme avec fichier de test
 exec: $(BIN)/$(EXEC)
