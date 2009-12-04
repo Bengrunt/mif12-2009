@@ -57,6 +57,12 @@ class TypeArray : public Type {
 		 * @return Liste des intervalles.
 		 */
 		std::vector<TypeInterval*>* getIntervals() const;
+		
+		/**
+		 * Mets à jour le nom du type par rapport au type et aux bornes.
+		 */
+		void updateName();
+
 };
 
 #endif
