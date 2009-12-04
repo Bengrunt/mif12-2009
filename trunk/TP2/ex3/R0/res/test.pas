@@ -1,6 +1,6 @@
 program test;
 var v0, v1 : integer;
-	inter1 : v1..v0;
+	inter1 : v1 .. v0;
 	vreal  : real;
 	itab1   : array [ 1 .. 10 ] of integer;
 	itab2   : array [ 1 .. 10 , 1 .. 2 ] of integer;
